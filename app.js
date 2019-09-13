@@ -62,7 +62,8 @@ let lrs = new XAPI.LRS();
 
   lrs.on('ready', function(){
     console.log("The lrs is attached to the database and ready. You can now use the programmatic API.")
-
+    console.log(`HOST: ${process.env.host}`);
+    console.log(`MONGODB: ${process.env.connectionString}`);
    lrs.insertStatement(serverStmt).then( ()=>{
       console.log("The statement was stored");
     }).catch( (e)=>{
