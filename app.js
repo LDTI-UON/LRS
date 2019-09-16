@@ -3,6 +3,9 @@ const app = express();
 const XAPI = require('vtc-lrs');
 const uuid = require('uuid');
 
+/* 
+!!! ensure you set PORT, connectionString and host ENV vars before launching this!!!
+*/
 let lrs = new XAPI.LRS(); 
   
   let xapi = new XAPI( {
@@ -64,15 +67,13 @@ let lrs = new XAPI.LRS();
     
     console.log(`HOST: ${xapi.host}`);
     console.log(`MONGODB: ${xapi.connectionString}`);
-    console.log("The lrs is attached to the database and ready. You can now use the programmatic API.");
-	
+    console.log("The lrs is attached to the database and ready. You can now use the programmatic API.");  
+
    lrs.insertStatement(serverStmt).then( ()=>{
       console.log("The statement was stored");
     }).catch( (e)=>{
       console.log("There was some problem with the statement.", e)
     });
   });
-
-  
 
 module.exports = app;
