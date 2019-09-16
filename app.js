@@ -3,9 +3,6 @@ const app = express();
 const XAPI = require('vtc-lrs');
 const uuid = require('uuid');
 
-/* 
-!!! ensure you set PORT, connectionString and host ENV vars before launching this!!!
-*/
 let lrs = new XAPI.LRS(); 
   
   let xapi = new XAPI( {
@@ -19,11 +16,12 @@ let lrs = new XAPI.LRS();
       ); 
     },
     connectionString: process.env.connectionString || "mongodb://localhost",
-    baseUrl: process.env.host || "http://localhost:3000/xapi"
+    baseUrl: process.env.host || "http://localhost:9000/xapi"
   } );
 
   app.use('/xapi', xapi);
-  app.use("/ui", xapi.simpleUI());
+  app.use("/lrs-ui", xapi.simpleUI());
+
   //a batch of statements was stored. A single POSTed statement is treated as an array with one item  
   lrs.on("statementStored", function(ids)
   {
@@ -64,16 +62,16 @@ let lrs = new XAPI.LRS();
   };
 
   lrs.on('ready', function(){
-    
-    console.log(`HOST: ${xapi.host}`);
-    console.log(`MONGODB: ${xapi.connectionString}`);
-    console.log("The lrs is attached to the database and ready. You can now use the programmatic API.");  
-
+    console.log("The lrs is attached to the database and ready. You can now use the programmatic API.")
+    console.log(`HOST: ${process.env.host}`);
+    console.log(`MONGODB: ${process.env.connectionString}`);
    lrs.insertStatement(serverStmt).then( ()=>{
       console.log("The statement was stored");
     }).catch( (e)=>{
       console.log("There was some problem with the statement.", e)
     });
   });
+
+  
 
 module.exports = app;
